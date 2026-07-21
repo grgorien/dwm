@@ -1,5 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -61,6 +62,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 static const char *gchromecmd[] = { "google-chrome", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
+static const char *kanboardcmd[] = { "google-chrome", "http://localhost", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -77,7 +79,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_w,      spawn,          {.v = gchromecmd } },
-	{ 0,                            XK_Print,  spawn,          {.v = flameshotcmd } },
+    { MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kanboardcmd } },
+    { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = flameshotcmd } },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
