@@ -30,7 +30,6 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
     { "obs-studio", NULL,      NULL,       0,            0,           -1 },
-    { "obsidian",   NULL,      NULL,       1 << 3,       0,           -1 },
 };
 
 /* layout(s) */
@@ -66,6 +65,7 @@ static const char *gchromecmd[] = { "google-chrome", NULL };
 static const char *bravecmd[] = { "brave-browser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *obsidiancmd[] = { "obsidian", NULL };
+static const char *obscmd[] = { "obs", NULL };
 
 /* audio commands using pactl */
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
@@ -90,6 +90,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = bravecmd } },
     { MODKEY|ShiftMask,             XK_o,      spawn,          {.v = obsidiancmd } },
     { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = flameshotcmd } },
+    { MODKEY,                       XK_o,      spawn,          {.v = obscmd } },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
