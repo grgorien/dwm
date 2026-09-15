@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 #include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -28,7 +29,8 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-    { "obs-stuio", NULL,      NULL,       0,            0,           -1 },
+    { "obs-studio", NULL,      NULL,       0,            0,           -1 },
+    { "obsidian",   NULL,      NULL,       1 << 3,       0,           -1 },
 };
 
 /* layout(s) */
@@ -58,11 +60,17 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[]   = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]    = { "st", NULL };
 static const char *gchromecmd[] = { "google-chrome", NULL };
+static const char *bravecmd[] = { "brave-browser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
-static const char *kanboardcmd[] = { "google-chrome", "http://localhost", NULL };
+static const char *obsidiancmd[] = { "obsidian", NULL };
+
+/* audio commands using pactl */
+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "@DEFAULT_SINK@", "toggle", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -78,8 +86,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_w,      spawn,          {.v = gchromecmd } },
-    { MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kanboardcmd } },
+	{ MODKEY|ShiftMask,             XK_g,      spawn,          {.v = gchromecmd } },
+	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = bravecmd } },
+    { MODKEY|ShiftMask,             XK_o,      spawn,          {.v = obsidiancmd } },
     { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = flameshotcmd } },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
@@ -92,6 +101,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_F9,     spawn,          {.v = mutevol } },
+	{ MODKEY,                       XK_F10,    spawn,          {.v = downvol } },
+	{ MODKEY,                       XK_F11,    spawn,          {.v = upvol } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -120,4 +132,3 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
